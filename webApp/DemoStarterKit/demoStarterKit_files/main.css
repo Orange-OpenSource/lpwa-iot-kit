@@ -1,0 +1,162 @@
+﻿/**
+* Copyright (C) 2015 Orange
+*
+* This software is distributed under the terms and conditions of the 'Apache-2.0'
+* license which can be found in the file 'LICENSE' in this package distribution
+* or at 'http://www.apache.org/licenses/LICENSE-2.0'.
+*/
+/*==========================================================================================================
+
+     STYLESHEET
+
+==========================================================================================================*/
+
+body {
+  margin: 8px;
+  font-family: arial;
+  font-size: 16pt;
+}
+
+input {
+  font-family: arial;
+  font-size: 16pt;
+}
+
+.title {
+  width: 580px;
+  vertical-align: top;
+  font-size: 30pt;
+  color: #FF6501;
+  margin-bottom: 20px;
+  font-weight: bold;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.read-only {
+  color: white;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.space-vert {
+  margin-top: 10px;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  block visibility
+----------------------------------------------------------------------------------------------------------*/
+
+.invisible {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  indicator
+----------------------------------------------------------------------------------------------------------*/
+
+.indicator {
+  display: inline-block;
+  position: relative;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 11px;
+  border: 1px solid black;
+}
+
+.indicator-on {
+  background: #FF6501;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  frames
+----------------------------------------------------------------------------------------------------------*/
+
+.frame1 {
+  width: 620px;
+  margin-top: 5px ;
+  background: #FF6501;
+  border-radius: 5px;
+  padding: 10px 0px 10px 10px;
+}
+
+.frame2 {
+  width: 620px;
+  margin-top: 10px;
+  border: 1px solid #FF6501;
+  border-radius: 8px;
+  padding: 10px 0px 10px 15px;
+}
+
+.frame3 {
+  display: inline-block;
+  width: 410px;
+  background: #FF6501;
+  border-radius: 5px;
+  padding: 10px 0px 10px 10px;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  vertical alignment
+----------------------------------------------------------------------------------------------------------*/
+
+.col {
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.width1 {
+  width: 215px;
+}
+
+.width2 {
+  width: 180px;
+}
+
+.width3 {
+  width: 144px;
+}
+
+.width4 {
+  width: 65px;
+}
+
+.width5 {
+  width: 79px;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  bargraph
+----------------------------------------------------------------------------------------------------------*/
+
+.bargraph {
+  width: 250px;   /*100px*/   
+  float: right;    /*right*/
+  /*margin-right: 25px;*/  /*TANS le 21012016*/
+  margin-right: 20px;
+  height: 15px;
+  margin-top: 5px;
+  display: table;
+}
+
+.bargraph>div {
+  display: table-cell;
+}
+
+.bargraph-left {
+  background: yellow;    
+}
+
+.bargraph-right {
+  background: black;
+}
+
+/*========================================================================================================*/

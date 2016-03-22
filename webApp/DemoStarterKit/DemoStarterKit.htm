@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+
+<!--
+Copyright (C) 2015 Orange
+
+This software is distributed under the terms and conditions of the 'Apache-2.0'
+license which can be found in the file 'LICENSE' in this package distribution
+or at 'http://www.apache.org/licenses/LICENSE-2.0'.
+-->
+
+<!--
+==========================================================================================================================
+-->
+<head>
+  <title>LoRa IoT Démo Starter Kit</Title>
+  <script src="demoStarterKit_files/configuration.js"></script>
+  <script src="generic_files/aes_encryption.js"></script>
+  <script src="generic_files/lpwan_encryption.js"></script>
+  <script src="generic_files/datavenue.js"></script>
+  <script src="generic_files/bargraph.js"></script>
+  <script src="demoStarterKit_files/main.js"></script>
+  <link rel="stylesheet" type="text/css" href="demoStarterKit_files/main.css">
+</head>
+<!--
+==========================================================================================================================
+-->
+<body>
+  <div class="title">Orange IoT Starter Kit Demo</div>
+    <img id="logo" src="generic_files/logo.png">
+  <div>
+    <div class="indicator" id="request-indicator"></div>
+    <div class="inline">ongoing request</div>
+  </div>
+  <br>
+<!--
+==========================================================================================================================
+-->
+  <div class="frame1">
+    <div class="col width1">datasource identifier</div>
+    <div class="inline read-only" id="datasource"></div>
+  </div>
+  <br>
+<!--
+==========================================================================================================================
+-->
+  <input id="rx-button" type="button" value="get last received message" onclick="_MAIN.onClickGetMessage ()">
+  <div class="frame2">
+    <div>
+      <div class="col width2">last request</div>
+      <div class="frame3">
+        <div>     
+          <div class="col width3">message date</div>
+          <div class="inline read-only" id="rx-date"></div>
+        </div>
+        <div>
+          <div class="col width3">value</div>
+          <div class="inline read-only" id="rx-value"></div>
+        </div>
+        <div>
+          <div class="col width3">SNR</div>
+          <div class="inline read-only" id="rx-snr"></div>
+        </div>
+        <div>
+          <div class="col width3">RSSI</div>
+          <div class="inline read-only" id="rx-rssi"></div>
+        </div>
+      </div>
+    </div>
+    <div class="space-vert">
+      <div class="col width2">application data</div>
+      <div class="frame3">
+        <div>
+          <div class="col width3">light sensor</div>
+          <div class="inline read-only" id="rx-light"></div>
+          <div id="bargraph"></div>
+        </div>
+        <div>
+          <div class="col width3">led</div>
+          <div class="inline read-only" id="rx-led"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+<!--
+==========================================================================================================================
+-->
+  <input id="tx-button" type="button" value="send command" onclick="_MAIN.onClickSendCommand ()">
+  <div class="frame2">
+    <div>
+      <div class="col width2">last request</div>
+      <div class="frame3">
+      <div>     
+        <div class="col width3">command date</div>
+        <div class="inline read-only" id="tx-date"></div>
+      </div>
+      <div>
+        <div class="col width3">value</div>
+        <div class="inline read-only" id="tx-value"></div>
+      </div>
+      <div>
+        <div class="col width3">frame counter</div>
+        <div class="inline read-only" id="tx-frame-counter"></div>
+      </div>
+      </div>
+    </div>
+    <div class="space-vert">
+      <div class="col width2">application data</div>
+      <div class="frame3">
+        <div>
+          <div class="col width3">led</div>
+          <div class="inline">
+            <input id="tx-led-on" type="radio" name="tx-led" checked>On&nbsp;&nbsp;
+			<input id="tx-led-off" type="radio" name="tx-led" checked>Off&nbsp;&nbsp;
+            <input id="tx-led-Blink" type="radio" name="tx-led">Blink     <!------TANS 20012016-------->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--
+==========================================================================================================================
+-->
+</body>
+</html>
