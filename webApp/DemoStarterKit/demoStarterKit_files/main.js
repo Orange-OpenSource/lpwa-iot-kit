@@ -16,18 +16,32 @@
 var _MAIN = (function (){
 
 var
-  _myDevice = { datasource: _CONFIG.datasource },
-  _bargraph ;
+  _myDevice = {},
+  _bargraph,
+  _server;
 
 //------------------------------------------------------------------------------------------------------------------------
 //  modifies the page (request indicator, buttons) at the beginning and at the end of an ongoing request
 //------------------------------------------------------------------------------------------------------------------------
 
-function setRequestState (ongoing){
+function setRequestStateRx (ongoing){
+  if(ongoing){
+    document.getElementById ("rx-button").classList.add("invisible") ;
+    document.getElementById ("rx-button-loader").classList.remove("invisible") ;
+  } else {
+    document.getElementById ("rx-button-loader").classList.add("invisible") ;
+    document.getElementById ("rx-button").classList.remove("invisible") ;
+  }
+}
 
-  document.getElementById ("rx-button").disabled = ongoing ;
-  document.getElementById ("tx-button").disabled = ongoing ;
-  document.getElementById ("request-indicator").className = ongoing ? "indicator indicator-on" : "indicator";
+function setRequestStateTx (ongoing){
+  if(ongoing){
+    document.getElementById ("tx-button").classList.add("invisible") ;
+    document.getElementById ("tx-button-loader").classList.remove("invisible") ;
+  } else {
+    document.getElementById ("tx-button-loader").classList.add("invisible") ;
+    document.getElementById ("tx-button").classList.remove("invisible") ;
+  }
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +49,6 @@ function setRequestState (ongoing){
 //------------------------------------------------------------------------------------------------------------------------
 
 function displayError (err){
-
   alert ("ERROR: " + err);
 }
 
@@ -49,7 +62,6 @@ function displayError (err){
 //------------------------------------------------------------------------------------------------------------------------
 
 function formatDate (date){
-
   return (date.toLocaleDateString() + " " + date.toLocaleTimeString());
 }
 
@@ -62,6 +74,36 @@ function formatDate (date){
 //    metadata {object}: metadata
 //------------------------------------------------------------------------------------------------------------------------
 
+function updateValues(value, ledState, lightValue){
+  document.getElementById ("rx-value").innerHTML = "0x" + _COMMONS.convertByteArrayToHex (value);
+    
+  //----- led
+  switch(ledState){
+    case 0:
+      document.getElementById ("rx-led").innerHTML = "OFF" ;
+      document.getElementById ("rx-led-icon").classList.remove("led-on") ;
+      document.getElementById ("rx-led-icon").classList.remove("led-blink") ;
+      break;
+    case 1:
+      document.getElementById ("rx-led").innerHTML = "ON" ;
+      document.getElementById ("rx-led-icon").classList.remove("led-blink") ;
+      document.getElementById ("rx-led-icon").classList.add("led-on") ;
+      break;
+    case 2:
+      document.getElementById ("rx-led").innerHTML = "Blink" ;
+      document.getElementById ("rx-led-icon").classList.remove("led-on") ;
+      document.getElementById ("rx-led-icon").classList.add("led-blink") ;  //ajout TANS 21012016
+      break;
+    default:
+      throw ("wrong led value: " + ledState);
+      break;
+  }
+  
+  //----- light sensor
+  document.getElementById ("rx-light").innerHTML = lightValue === undefined ? "Unknown" : lightValue ;
+  _bargraph.refresh(lightValue) ;
+}
+
 function displayMessage (value, at, metadata){
 
   //----- at
@@ -69,35 +111,26 @@ function displayMessage (value, at, metadata){
   document.getElementById ("rx-date").innerHTML = formatDate (at);
     
   //----- metadata
-
-  document.getElementById ("rx-rssi").innerHTML = metadata.rssi + " dBm";
-  document.getElementById ("rx-snr").innerHTML = metadata.snr + " dB";
-
+  if(metadata.signalLevel !== undefined){
+    for(var i = 0; i < 5; ++i)
+      if(metadata.signalLevel > i)
+        document.getElementById ("rx-signal-strength-bar" + (i + 1)).classList.add("bar-green");
+      else
+        document.getElementById ("rx-signal-strength-bar" + (i + 1)).classList.remove("bar-green");
+  }
+  
   //----- value
-
-  //if (value.length !== 5) // TA 18012016
-    //throw ("wrong 'value' field length (5 bytes expected)");
-  document.getElementById ("rx-value").innerHTML = "0x" + _DATAVENUE.convertByteArrayToHex (value);
-    
-  //----- led
-
-  var led = value[0];
-  if (led === 1)
-    document.getElementById ("rx-led").innerHTML = "On" ;
-  else if (led === 0)
-    document.getElementById ("rx-led").innerHTML = "Off" ;
-  else if (led === 2)
-    document.getElementById ("rx-led").innerHTML = "Blink" ;  //ajout TANS 21012016
+  //Old config: 0xAA0000BBCC  AA: LED, BBCC: Light sensor
+  if (value.length == 5)
+    updateValues(value, value[0], value[1] << 24 | value[2] << 16 | value[3] << 8 | value[4]);
+  else if(value.length == 3)
+    //New config: 0xAABBCC  AA: LED, BBCC: Light sensor
+    updateValues(value, value[0], value[1] << 8 | value[2]);
   else
-    throw ("wrong led value");
-
-
-  //----- light sensor = value =  0x0100000109 ==> 01 x 256 + 09 x 1 = light sensor = 265  
-
-  var light = ((value[1]*256 + value[2])*256 + value[3])*256 + value[4];  
-  document.getElementById ("rx-light").innerHTML = light ;  
-  _bargraph.refresh (light);
-  _bargraph.show ();
+    //Default
+    updateValues(value, 0, undefined);
+  
+  setRequestStateRx(false);
 };
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -108,13 +141,13 @@ function onClickGetMessage (){
 
   document.getElementById ("rx-date").innerHTML = "";
   document.getElementById ("rx-value").innerHTML = "";
-  document.getElementById ("rx-snr").innerHTML = "";
-  document.getElementById ("rx-rssi").innerHTML = "";
   document.getElementById ("rx-light").innerHTML = "";
-  document.getElementById ("rx-led").innerHTML = "";
-  _bargraph.hide ();
-
-  _DATAVENUE.getLastMessage (_myDevice, displayMessage);
+  document.getElementById ("rx-led").classList.remove("led-on");
+  document.getElementById ("rx-led").classList.remove("led-blink");
+  
+  setRequestStateRx(true);
+  
+  _server.getLastMessage (_myDevice, displayMessage);
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -123,44 +156,59 @@ function onClickGetMessage (){
 
 function onClickSendCommand (){
 
-  //----- callback 2
+  //----- callback
 
-  function callback2 (response){
+  function callbackSent (response){
 
-    if (response.at === undefined)
-      throw ("'at' field missing");
-    document.getElementById ("tx-date").innerHTML = formatDate (new Date (response.at));
-  };
-
-  //----- callback 1
-
-  function callback1 (frameCounter){
-
-    frameCounter++ ;
-    document.getElementById ("tx-frame-counter").innerHTML = frameCounter ;
-    var value = new Uint8Array (1);
-    //value[0] = (document.getElementById("tx-led-off").checked)? 0 : 1 ;
-	if (document.getElementById("tx-led-off").checked)
-	  value[0] = 0 ;
-	else if (document.getElementById("tx-led-on").checked)
-	  value[0] = 1 ;
-	else
-	  value[0] = 2 ;   // ajout BLK Value TANS le 22/01/2016
-    document.getElementById ("tx-value").innerHTML = "0x" + _DATAVENUE.convertByteArrayToHex (value);
-    var metadata = {
-      fcnt: frameCounter,
-      port: _CONFIG.CmdFPort,
-      confirmed: "true"
-    };
-    _DATAVENUE.sendCommand (_myDevice, value, metadata, callback2);
+    //Update UI
+    if (response === undefined)
+      throw ("command date is undefined");
+    document.getElementById ("tx-date").innerHTML = formatDate (new Date (response));
+    setRequestStateTx(false);
   };
 
   //----- main
 
+    //clear UI
   document.getElementById ("tx-date").innerHTML = "";
   document.getElementById ("tx-value").innerHTML = "";
   document.getElementById ("tx-frame-counter").innerHTML = "";
-  _DATAVENUE.getDownlinkFrameCounter (_myDevice, callback1);
+  
+    //create payload and send it
+  var value = new Uint8Array (1);
+  if (document.getElementById("tx-led-off").checked)
+    value[0] = 0 ;
+  else if (document.getElementById("tx-led-on").checked)
+    value[0] = 1 ;
+  else
+    value[0] = 2 ;   // ajout BLK Value TANS le 22/01/2016
+  
+  //update UI
+  document.getElementById ("tx-value").innerHTML = "0x" + _COMMONS.convertByteArrayToHex (value);
+  setRequestStateTx(true);
+  
+  // send payload
+  _server.sendCommand (_myDevice, value, _CONFIG_COMMONS.CmdFPort, true, callbackSent);
+}
+
+function init(){    
+    
+  if(window._CONFIG_LOM !== undefined)
+    _CONFIG = _CONFIG_LOM;
+  else
+    throw "can't load a config";
+  
+  _myDevice.deviceID = _CONFIG.deviceID;
+  document.getElementById ("deviceID").innerHTML = _CONFIG.deviceID ;
+  
+  _bargraph = Bargraph ("bargraph", _CONFIG_COMMONS.lightMin, _CONFIG_COMMONS.lightMax);
+  
+  _COMMONS.init(_CONFIG.url, _CONFIG_COMMONS.requestTimeout, displayError, setRequestStateRx, setRequestStateTx);
+
+  if(window._CONFIG_LOM !== undefined && _CONFIG == window._CONFIG_LOM) {
+    _server = _LOM;
+    _server.init (_CONFIG.X_API_Key);
+  }
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -168,12 +216,11 @@ function onClickSendCommand (){
 //------------------------------------------------------------------------------------------------------------------------
 
 window.onload = function (e){
-
-  document.getElementById ("datasource").innerHTML = _CONFIG.datasource ;  
-  _bargraph = Bargraph ("bargraph", _CONFIG.lightMin, _CONFIG.lightMax);
-  _DATAVENUE.init (_CONFIG.datavenueUrl, _CONFIG.requestTimeout, _CONFIG.X_OAPI_Key, _CONFIG.X_ISS_Key,
-  displayError, setRequestState);
-  _DATAVENUE.initDevice (_myDevice, _CONFIG.appSKey);
+  try {      
+    init();
+  } catch (err) {
+    displayError(err);
+  }
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -181,6 +228,7 @@ window.onload = function (e){
 //------------------------------------------------------------------------------------------------------------------------
 
 return {
+  init: init,
   onClickGetMessage: onClickGetMessage,
   onClickSendCommand: onClickSendCommand
 };

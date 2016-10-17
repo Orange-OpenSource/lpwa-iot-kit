@@ -24,66 +24,45 @@
 
 function Bargraph (_divId, _valMin, _valMax){
 
-var _divContainer, _divLeft, _width, _valDelta ;
+  var _divContainer ;
 
-//------------------------------------------------------------------------------------------------------------------------
-//  refresh value
-//
-//  in:
-//    val {number}: value
-//------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------
+  //  refresh value
+  //
+  //  in:
+  //    val {number}: value
+  //------------------------------------------------------------------------------------------------------------------------
 
-function refresh (val){
+  function refresh (val){
+      if(val === undefined) {
+        //en cas d'erreur affiche la barre pleine en rouge
+        val = _valMax ;
+        _divContainer.classList.add("progress-background-red") ;
+      } else
+        _divContainer.classList.remove("progress-background-red") ;
+        
+      if (val < _valMin)
+        val = _valMin ;
+      else if (val > _valMax)
+        val = _valMax ;
 
-  if (val < _valMin)
-    val = _valMin ;
-  else if (val > _valMax)
-    val = _valMax ;
-  var width = Math.round ((_width*(val - _valMin))/_valDelta);
-  if (width === 0){
-	_divLeft.setAttribute ("class", "bargraph-right");
-    _divLeft.setAttribute ("style", "width:1px");
-  } else {
-    _divLeft.setAttribute ("style", "width: " + width + "px");
-    _divLeft.setAttribute ("class", "bargraph-left");
+      var width = Math.round(100 * (val - _valMin)/(_valMax - _valMin));
+      _divContainer.setAttribute ("style", "width: " + width + "%");
   }
-}
 
-//------------------------------------------------------------------------------------------------------------------------
-//  show/hide
-//------------------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------------------------
+  //  main
+  //------------------------------------------------------------------------------------------------------------------------
 
-function show (){
+  _divContainer = document.getElementById (_divId);
 
-  _divContainer.className = "bargraph";
-}
+  //------------------------------------------------------------------------------------------------------------------------
+  //  public functions
+  //------------------------------------------------------------------------------------------------------------------------
 
-function hide (){
-
-  _divContainer.className = "invisible";
-}
-
-//------------------------------------------------------------------------------------------------------------------------
-//  main
-//------------------------------------------------------------------------------------------------------------------------
-
-_divContainer = document.getElementById (_divId);
-_divContainer.innerHTML = "<div class='bargraph-right'></div><div class='bargraph-right'></div>";
-_divContainer.className = "bargraph";
-_width = _divContainer.getBoundingClientRect().width ;
-_divContainer.className = "invisible";
-_divLeft = _divContainer.childNodes[0];
-_valDelta = _valMax - _valMin ;
-
-//------------------------------------------------------------------------------------------------------------------------
-//  public functions
-//------------------------------------------------------------------------------------------------------------------------
-
-return {
-  refresh: refresh,
-  show: show,
-  hide: hide
-};
+  return {
+    refresh: refresh
+  };
 }
 
 //========================================================================================================================

@@ -1,0 +1,313 @@
+﻿/**
+* Copyright (C) 2015 Orange
+*
+* This software is distributed under the terms and conditions of the 'Apache-2.0'
+* license which can be found in the file 'LICENSE' in this package distribution
+* or at 'http://www.apache.org/licenses/LICENSE-2.0'.
+*/
+/*==========================================================================================================
+
+     STYLESHEET
+
+==========================================================================================================*/
+
+body {
+  font-family: arial;
+/*  font-size: 16pt;*/
+}
+
+input {
+  font-family: arial;
+  font-size: 16pt;
+}
+
+.title {
+  width: 580px;
+  vertical-align: top;
+  font-size: 30pt;
+  color: #F16E00;
+  margin-bottom: 20px;
+  font-weight: bold;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+#logo {
+  margin: 0.5% 1rem 0 0;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  Size and move
+----------------------------------------------------------------------------------------------------------*/
+.move-float-btn {
+  top: 20px;
+  right: 1rem !important;
+  position: absolute;
+}
+
+.move-sync-btn {
+  top: 38px;
+  right: 1rem !important;
+  position: absolute;
+}
+
+.no-bottom {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.no-top {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.left-padded {
+  padding-left: 1rem;
+}
+
+.padded {
+  padding: 0.5rem 1rem 0.7rem 1rem;
+}
+
+.button-loader {
+  padding-top: 0.6rem;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  Materialize override
+----------------------------------------------------------------------------------------------------------*/
+
+div .brand-logo {
+  color: #fff;
+  display: inline-block;
+  font-size: 2.1rem;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.btn-large {
+  background-color: #50BE87;
+}
+
+.divider {
+   margin-bottom: 0.5rem;
+}
+
+div.card-title {
+  color: white;
+  padding: 1rem 0 1rem 1rem;
+}
+
+span.card-title {
+  color: #F16E00;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"].with-gap:checked + label:before,
+[type="radio"].with-gap:checked + label:after {
+  border-color: #CD3C14 !important;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"].with-gap:checked + label:after {
+  background-color: #CD3C14 !important;
+}
+
+.switch {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.switch label .lever {
+  background-color: #84c7c1;
+}
+
+.switch label .lever:after {
+  background-color: #26a69a;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  colors
+----------------------------------------------------------------------------------------------------------*/
+
+.grey {
+  background-color: #595959 !important;
+}
+
+.orange-dark {
+  background-color: #F16E00;
+  color: white;
+}
+
+.orange-light {
+  background-color: #FF7900;
+  color: black;
+}
+
+.black-text {
+  color: black !important;
+}
+
+.white-text {
+  color: white !important;
+}
+
+.iot-card {
+  background-color: white !important;
+  color: black !important;
+}
+
+.rx-color{
+  background-color: #32C832 !important;
+}
+
+.rx-color.darken{
+  background-color: #32AF32 !important;
+}
+
+.rx-color-text{
+  color: #32C832 !important;
+}
+
+.rx-color-text.darken{
+  color: #32AF32 !important;
+}
+
+#rx-button-loader .spinner-layer{
+  border-color: #329632 !important;
+}
+
+.tx-color{
+  background-color: #FFD200 !important;
+}
+
+.tx-color.darken{
+  background-color: #FFB900 !important;
+}
+
+.tx-color-text{
+  color: #FFD200 !important;
+}
+
+.tx-color-text.darken{
+  color: #FFB900 !important;
+}
+
+#tx-button-loader .spinner-layer{
+  border-color: #FFA000 !important;
+}
+
+.progress-background-red{
+  background-color: red !important;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  block visibility
+----------------------------------------------------------------------------------------------------------*/
+
+.invisible {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.inline {
+  display: inline-block;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  indicator
+----------------------------------------------------------------------------------------------------------*/
+
+.indicator {
+  display: inline-block;
+  position: relative;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid  #5a5a5a;
+}
+
+.indicator-on {
+  background: #FF7900;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  led
+----------------------------------------------------------------------------------------------------------*/
+
+.led-on {
+  color: #FFD200 !important;
+}
+
+/* Standard syntax */
+@-webkit-keyframes blinking {
+  0% {color: #26a69a;}
+  25% {color: #FFD200;}
+  75% {color: #FFD200;}
+  100% {color: #26a69a;}
+}
+
+@keyframes blinking {
+    0% {color: #26a69a;}
+    25% {color: #FFD200;}
+    75% {color: #FFD200;}
+    100% {color: #26a69a;}
+}
+
+.led-blink {
+  -webkit-animation-name: blinking; /* Chrome, Safari, Opera */
+  -webkit-animation-duration: 0.5s; /* Chrome, Safari, Opera */
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: reverse;
+  
+  animation-name: blinking;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+}
+
+/*----------------------------------------------------------------------------------------------------------
+  signal bars
+----------------------------------------------------------------------------------------------------------*/
+.signal-bars {
+    height: 14px;
+    width: 28px;
+    white-space: nowrap;
+    margin-right: 1rem;
+}
+
+.signal-bars .bar {
+    width: 14%;
+    display: inline-block;
+    background-color: #ccc; 
+}
+
+.bar-green {
+    background-color: #50be87 !important;
+}
+  
+.signal-bars .bar.bar-1 {
+    height: 28%;
+}
+
+.signal-bars .bar.bar-2 {
+    height: 46%;
+}
+
+.signal-bars .bar.bar-3 {
+    height: 64%;
+}
+
+.signal-bars .bar.bar-4 {
+    height: 82%;
+}
+
+.signal-bars .bar.bar-5 {
+    height: 100%;
+}
+
+/*========================================================================================================*/

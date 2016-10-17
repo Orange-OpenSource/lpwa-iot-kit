@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>LoRa IoT Démo Starter Kit</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/main.css" type="text/css" rel="stylesheet" media="screen,projection">
+</head>
+<body>
+  
+  <nav class="grey">
+    <div class="row">
+      <div class="col s9 m10 l11">
+        <span id="logo-container" class="brand-logo left">Orange IoT Starter Kit Demo</span>
+      </div>
+      
+      <div style="col s1 m1 l1">
+        <a href="https://customer-communities.orange-business.com/welcome" target=_BLANK>
+          <img id="logo" src="generic_files/logo.png" class="right"/>
+        </a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="card row no-bottom orange-light center">
+      <span class="card-title white-text">Device ID:</span>
+      <span id="deviceID" class="white-text"/>
+  </div>
+    
+  <!----- Device ID ----->
+
+    <div class="row">
+      
+      <!----- Receive Data ----->
+      
+      <div class="col s12 m12 l6">
+          <h4 class="center rx-color-text darken">
+            Last uplink
+          </h4>
+          
+          <div class="card-content no-top no-bottom">
+        
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <div class="card iot-card">
+                
+                <div class="card-title rx-color">
+                  Application data
+                  <div class="col s12 m12 l12 move-float-btn">
+                    
+                    <div id="rx-button" type="button" title="get last uplink" class="btn-floating btn-large waves-effect waves-light rx-color darken right" onclick="_MAIN.onClickGetMessage ()">
+                      <i class="material-icons">sync</i>                      
+                    </div>
+                    
+                    <div id="rx-button-loader" title="please wait" class="btn-floating btn-large waves-effect waves-light rx-color darken right invisible">
+                      <div class="button-loader">
+                        <div class="preloader-wrapper small active">
+                          <div class="spinner-layer">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div><div class="gap-patch">
+                              <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  
+                  <ul class="collection">
+                    <li class="collection-item">
+                      <div>
+                        Light sensor
+                        <div class="secondary-content" id="rx-light">
+                          Unknown
+                        </div>
+                        <div class="progress">
+                          <div id="bargraph" class="determinate" style="width: 0%"></div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="collection-item">
+                      <div>
+                        LED
+                        <div class="secondary-content">
+                          <div id="rx-led" class="col">
+                            OFF
+                          </div>
+                          <div class="col">
+                            <i class="material-icons" id="rx-led-icon">lightbulb_outline</i>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+              </div>
+          </div>
+        </div>
+          
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <div class="card iot-card">
+              
+              <div class="card-title rx-color">
+                Metadata
+              </div>
+              
+              <div class="card-content">
+                
+                <ul class="collection">
+                  <li class="collection-item">
+                    <div>
+                      Date
+                      <div class="secondary-content" id="rx-date">Unknown</div>
+                    </div>
+                  </li>
+                  <li class="collection-item">
+                    <div>
+                      Value
+                      <div class="secondary-content" id="rx-value">Unknown</div>
+                    </div>
+                  </li>
+                  <li id="rx-snr-block" class="collection-item">
+                    <div>
+                      <span id="rx-snr-name">Signal Strength</span>
+                      <div class="secondary-content">                        
+                        <div id="rx-signal-strength" class="signal-bars"> 
+                          <div id="rx-signal-strength-bar1" class="bar-1 bar"></div>
+                          <div id="rx-signal-strength-bar2" class="bar-2 bar"></div>
+                          <div id="rx-signal-strength-bar3" class="bar-3 bar"></div>
+                          <div id="rx-signal-strength-bar4" class="bar-4 bar"></div>
+                          <div id="rx-signal-strength-bar5" class="bar-5 bar"></div> 
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+        
+    </div>
+      
+    <!----- Send Data ----->
+  
+    <div class="col s12 m12 l6">
+      <h4 class="center tx-color-text darken">
+        Send Command
+      </h4>
+      
+      <div class="card-content no-top no-bottom">
+        
+        <div class="row">
+          
+        <div class="row">
+          
+          <div class="col s12 m12 l12">
+            <div class="card iot-card">
+              
+              <div class="card-title tx-color">
+                LED
+                
+                <div class="col s12 m12 l12 move-float-btn">
+                  <div id="tx-button" type="button" title="send to device" class="btn-floating btn-large waves-effect waves-light tx-color darken right" onclick="_MAIN.onClickSendCommand ()">
+                    <i class="material-icons">send</i>
+                  </div>
+                  
+                  <div id="tx-button-loader" title="please wait" class="btn-floating btn-large waves-effect waves-light tx-color darken right invisible">
+                    <div class="button-loader">
+                      <div class="preloader-wrapper small active">
+                        <div class="spinner-layer">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    
+                </div>
+              </div>
+              
+              <div class="card-content">
+                
+                <div class="row">
+                  <div class="col s12 m4 l4">
+                    <input id="tx-led-on" class="with-gap" name="tx-led" type="radio" checked="on" />
+                    <label for="tx-led-on" class="black-text">ON</label>
+                  </div>
+                  <div class="col s12 m4 l4">
+                    <input id="tx-led-off" class="with-gap" name="tx-led" type="radio" />
+                    <label for="tx-led-off" class="black-text">OFF</label>
+                  </div>
+                  <div class="col s12 m4 l4">
+                    <input id="tx-led-Blink" class="with-gap" name="tx-led" type="radio" />
+                    <label for="tx-led-Blink" class="black-text">Blink</label>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>
+            
+          </div>
+            <div class="col s12 m12 l12">
+              <div class="card iot-card">
+                
+                <div class="card-title tx-color">
+                  Metadata
+                </div>
+                
+                <div class="card-content">
+                  
+                  <ul class="collection">
+                    <li class="collection-item">
+                      <div>
+                        Date
+                        <div class="secondary-content" id="tx-date">Unknown</div>
+                      </div>
+                    </li>
+                    <li class="collection-item">
+                      <div>
+                        Value
+                        <div class="secondary-content" id="tx-value">Unknown</div>
+                      </div>
+                    </li>
+                    <li id="tx-frame-counter-block" class="collection-item">
+                      <div>
+                        Frame counter
+                        <div class="secondary-content" id="tx-frame-counter">Unknown</div>
+                      </div>
+                    </li>
+                  </ul>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+          
+      </div>
+    </div>
+
+    <!--  Scripts--> 
+    <script src="generic_files/aes_encryption.js"></script>
+    <script src="generic_files/lpwan_encryption.js"></script>
+    <script src="generic_files/bargraph.js"></script>
+    
+    <script src="demoStarterKit_files/configuration.js"></script>
+    
+    <script src="demoStarterKit_files/commons.js"></script>
+    <script src="demoStarterKit_files/servers/LOM.js"></script>
+    
+    <script src="demoStarterKit_files/main.js"></script>
+
+  </body>
+</html>

@@ -5,26 +5,38 @@
 * license which can be found in the file 'LICENSE' in this package distribution   
 * or at 'http://www.apache.org/licenses/LICENSE-2.0'.   
 */   
-   
+
+var _CONFIG;
+
+//*
 //========================================================================================================================   
 //   
-//     CONFIGURATION CONSTANTS   
+//     LOM CONFIGURATION CONSTANTS   
 //   
 //========================================================================================================================   
-   
-var _CONFIG = {   
-  //----- datasource identifier for the concerned device   
-  datasource : "1cc07401e00140fd91498a2355bb35db",
-   
-  //----- AES encryption/decryption cipher application session key (use "" for no encryption)   
-  appSKey : "2e9017786eef1234567897c456242",
-   
-  //----- datavenue server url   
-  datavenueUrl: "https://api.orange.com/datavenue/v1",   
-   
-  //----- security keys   
-  X_OAPI_Key : "mr58123456789d3koGvOOBWntDZIak12",
-  X_ISS_Key : "dcc5dff123456755555855dcd5be3ac4e",
+
+var _CONFIG_LOM = {   
+  
+  //----- LOM server url   
+  url : "https://lpwa.liveobjects.orange-business.com/api/v0", //LOM Prod
+  
+  //----- device identifier 
+  deviceID : "",
+  
+  //----- security key
+  X_API_Key : ""
+};
+
+_CONFIG = _CONFIG_LOM; //select LOM by default
+//*/
+
+//========================================================================================================================   
+//   
+//     COMMONS CONFIGURATION CONSTANTS   
+//   
+//========================================================================================================================   
+
+var _CONFIG_COMMONS = {
    
   //----- maximum time for a request (in milliseconds, use 0 for no timeout)   
   requestTimeout: 8000,   
@@ -34,9 +46,10 @@ var _CONFIG = {
    
   //----- light sensor measurement range   
   lightMin:   10,   //  darkness one hundred per cent   
-  lightMax: 1100      
+  lightMax: 1023      
    
-};   
+};
+
 //========================================================================================================================   
    
    

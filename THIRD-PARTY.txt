@@ -1,3 +1,0 @@
-Arduino  
-Copyright(C)  Arduino LLC  
-Arduino is distributed under the terms and conditions of the 'LGPL' license 
